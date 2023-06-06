@@ -1,0 +1,57 @@
+        <!-- Add product Modal -->
+        <div class="modal fade" id="add_category" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"> Add new Category: </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <form id="category-form" action="{% url 'add_category' %}" method="POST" enctype="multipart/form-data">
+                    <!-- form fields -->
+                    {% csrf_token %}
+                        <div class="modal-body">
+                            
+                                <div class="row mb-3">
+
+
+                                    <div class="col-sm-12">
+                                        
+                                        <div class="form-group">
+                                          <label class="bmd-label-floating">Category name: </label>
+                                          <input type="text" name="name" class="form-control" required>
+                                        </div>
+                                        <br>
+                                    </div>
+
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                          <label class="bmd-label-floating">Description</label>
+                                          <input type="text" name="description" class="form-control" required>
+                                        </div>
+                                        <br>
+                                    </div>
+
+                                    <div class="col-sm-12">
+
+                                            <label> Image: </label>
+                                            <input type="file" name="image" accept="image/png, image/jpeg" required>
+
+                                    </div>
+
+
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                        <input class="btn btn-info my-3" type="submit" value="Save Changes">
+                        </div>
+
+                </form>
+
+            </div>
+            </div>
+        </div>

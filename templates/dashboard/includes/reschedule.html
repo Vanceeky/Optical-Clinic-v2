@@ -1,0 +1,31 @@
+        <!-- Reschedule Modal -->
+        <div class="modal fade" id="reschedule_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"> Set new schedule: </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <form action="{% url 'reschedule_appointment' appointment.id %}" method="POST" enctype="multipart/form-data" class="reschedule-appointment-form">
+                    {% csrf_token %}
+                        <div class="modal-body">
+                                <div class="mb-3">
+                                    <input hidden="true" name="patient_id" value="{{ appointment.patient.id }}"/>
+                                    <div class="col-md-12 my-2">
+                                        <label class="col-form-label"> Please select a date: </label>
+                                        <input type="date" name="date" class="form-control" id="date" placeholder="Enter Date" min="{{current_datetime}}" Required>
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <input class="btn btn-info my-3" type="submit" value="Save Changes">
+                        </div>
+
+                </form>
+
+            </div>
+            </div>
+        </div>

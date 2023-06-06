@@ -1,0 +1,112 @@
+        <!-- Add appointment Modal -->
+        <div class="modal fade" id="add_appointment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"> Add new Appointment </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <form id="appointment-form" method="POST" action="{% url 'add_appointment' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                        <div class="modal-body">
+                            <div class="row">
+
+                                <div class="col-sm-6">
+                                  <div class="form-group">
+                                    <label class="bmd-label-floating">Firstname</label>
+                                    <input type="text" name="firstname" class="form-control" required>
+                                  </div>
+                                </div>
+                
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                      <label class="bmd-label-floating">Lastname</label>
+                                      <input type="text" name="lastname" class="form-control" required>
+                                    </div>
+                                  </div>
+                                
+                
+                              </div>
+                
+                              
+                            <div class="row">
+                
+
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                      <label class="bmd-label-floating">Phone number</label>
+                                      <input type="tel" name="phone_number" class="form-control" required>
+                                    </div>
+                                  </div>
+
+                                  <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating">Age</label>
+                                        <input type="age" name="age" class="form-control" required>
+                                      </div>
+                                </div>
+
+                                <div class="col-md-5">
+
+                                  <div class="form-group">
+
+
+                                    <div class="form-check form-check-radio form-check-inline">
+                                      <label class="form-check-label">
+                                        <input class="form-check-input" type="radio" name="gender" id="inlineRadio1" value="Male"> Male
+                                        <span class="circle">
+                                            <span class="check"></span>
+                                        </span>
+                                      </label>
+                                    </div>
+                                    <div class="form-check form-check-radio form-check-inline">
+                                      <label class="form-check-label">
+                                        <input class="form-check-input" type="radio" name="gender" id="inlineRadio2" value="Female"> Female
+                                        <span class="circle">
+                                            <span class="check"></span>
+                                        </span>
+                                      </label>
+                                    </div>
+
+                                  </div>
+
+                            
+                
+                
+                                </div>
+
+                              </div>
+                
+                
+                
+                              <div class="row">
+                                <div class="col-md-8">
+                                    <label class="col-form-label"> Please select a date: </label>
+                                    <input type="date" name="date" class="form-control" id="date" placeholder="Enter Date" min="{{current_datetime}}" required>
+                                </div>
+
+                                <div class="col-md-4">
+                                  <label class="col-form-label"> Time: </label>
+                                  <input type="time" name="time" class="form-control" id="time" required>
+                              </div>
+                
+                              </div>
+                
+                              <br>
+                
+                            
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <input class="btn btn-info my-3" type="submit" value="Save Changes">
+                        </div>
+
+                </form>
+
+            </div>
+            </div>
+        </div>
+
+  

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8" />
+  <link rel="apple-touch-icon" sizes="76x76" href="/static/assets/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="/static/assets/img/favicon.png">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+  <title>
+    OCMS | Sign up
+  </title>
+
+  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+  <!--     Fonts and icons     -->
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+  <!-- CSS Files -->
+  <link href="/static/assets/css/material-dashboard.css?v=2.1.2" rel="stylesheet" />
+  <!-- CSS Just for demo purpose, don't include it in your project -->
+
+</head>
+
+<style>
+@import url(https://fonts.googleapis.com/css?family=Roboto:300,400,700&display=swap);body {
+    background: #f5f5f5;
+  }
+
+  
+  @media only screen and (max-width: 767px) {
+    .hide-on-mobile {
+      display: none;
+    }
+  }
+  
+  .login-box {
+    background: url(../static/assets/img/login-form-bg.png);
+    background-size: cover;
+    background-position: center;
+    padding: 50px;
+    margin: 50px auto;
+    min-height: 700px;
+    -webkit-box-shadow: 0 2px 60px -5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 60px -5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .logo {
+    font-family: "Script MT";
+    font-size: 54px;
+    text-align: center;
+    color: #888888;
+    margin-bottom: 50px;
+  }
+
+  .logo a{
+    color: #888888;
+  }
+  
+  .logo .logo-font {
+    color: #3BC3FF;
+  }
+  
+  @media only screen and (max-width: 767px) {
+    .logo {
+      font-size: 34px;
+    }
+  }
+  
+  .header-title {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+
+  .header-title h3{
+    font-weight: bold;
+  }
+  
+  .login-form {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  .login-form .form-control {
+    border-radius: 0;
+    margin-bottom: 30px;
+  }
+  
+  .login-form .form-group {
+    position: relative;
+  }
+  
+  .login-form .form-group .forgot-password {
+    position: absolute;
+    top: 6px;
+    right: 15px;
+  }
+  
+  .login-form .btn {
+    border-radius: 0;
+    -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+  }
+  
+  .login-form .btn.btn-primary {
+    background: #3BC3FF;
+    border-color: #31c0ff;
+  }
+  
+  .slider-feature-card {
+    background: #fff;
+    max-width: 280px;
+    margin: 0 auto;
+    padding: 30px;
+    text-align: center;
+    -webkit-box-shadow: 0 2px 25px -3px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 25px -3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .slider-feature-card img {
+    height: 80px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+  
+  .slider-feature-card h3,
+  .slider-feature-card p {
+    margin-bottom: 30px;
+  }
+  
+  .carousel-indicators {
+    bottom: -50px;
+  }
+  
+  .carousel-indicators li {
+    cursor: pointer;
+  }
+
+  
+</style>
+
+<body class='center'>
+
+<section class="body">
+    <div class="container">
+        <div class="login-box">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="logo">
+                        <a href="{% url 'home' %}"><span class="logo-font">Optical</span>Clinic</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <br>
+                    <div class="header-title">
+                        <h3 class="">Create Account</h3>
+                        <h6 class="card-category">
+                            {% if msg %}
+                              <span class="text-danger">{{ msg | safe }}</span>
+                            {% else %}
+                              Add your credentials
+                            {% endif %}  
+                        </h6>
+
+                    </div>
+                    
+                    
+                    <form class="register-form" id="register-form" method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6">
+                              <div class="form-group">
+                                <label class="bmd-label-floating">Username</label>
+                                {{ form.username }}
+                              </div>
+                            </div>
+            
+                            <div class="col-md-6">
+                              <div class="form-group">
+                                <label class="bmd-label-floating">Email</label>
+                                {{ form.email }}
+                              </div>
+                            </div>
+            
+                          </div>
+                          <span class="text-danger">{{ form.username.errors }}</span>
+                          <span class="text-danger">{{ form.email.errors }}</span>
+
+
+                        <div class="row">
+                            <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">Firstname</label>
+                                {{ form.first_name }}
+                            </div>
+                            </div>
+
+                            <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">Lastname</label>
+                                {{ form.last_name }}
+                            </div>
+                            </div>
+                        </div>
+                        <span class="text-danger">{{ form.first_name.errors }}</span>
+                        <span class="text-danger">{{ form.last_name.errors }}</span>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                              <div class="form-group">
+                                <label class="bmd-label-floating">Password</label>
+                                {{ form.password1 }}
+                              </div>
+                            </div>
+            
+                            <div class="col-md-6">
+                              <div class="form-group">
+                                <label class="bmd-label-floating">Password Check</label>
+                                {{ form.password2 }}
+                              </div>
+                            </div>
+                          </div>
+                          <span class="text-danger">{{ form.password1.errors }}</span>
+                          <span class="text-danger">{{ form.password2.errors }}</span>
+            
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-block" name="register">Sign up</button>
+                        </div>
+                        <div class="form-group">
+                            <div class="text-center">Already have an account? <a href="{% url 'login' %}">Sign In Now</a></div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+{% include 'includes/scripts.html' %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  $(document).ready(function() {
+    $("#register-form").on("submit", function(e) {
+      e.preventDefault();
+  
+      // Show loading indicator
+      var loading = Swal.fire({
+        title: 'Loading',
+        text: 'Wait lang...',
+        allowOutsideClick: false,
+        showCancelButton: false,
+        showConfirmButton: false,
+        onBeforeOpen: () => {
+          Swal.showLoading();
+        }
+      });
+  
+      $.ajax({
+        type: "POST",
+        url: "{% url 'register' %}",
+        data: $(this).serialize(),
+        dataType: 'json',
+        success: function(response) {
+          // Close loading indicator
+          loading.close();
+  
+          if (response.success) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Success',
+              text: 'Please check your email to confirm your registration.'
+            }).then(function() {
+              
+               location.reload(); // Reload the page
+            });
+          } else {
+            var errorMessages = Object.values(response.errors).flat();
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: errorMessages.join(' ')
+            });
+          }
+        },
+        error: function(xhr, status, error) {
+          // Close loading indicator
+          loading.close();
+  
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'An error occurred. Please try again.'
+          });
+        }
+      });
+    });
+  });
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+</script>
+</body>
+</html>

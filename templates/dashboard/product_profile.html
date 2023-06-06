@@ -1,0 +1,167 @@
+{% extends 'layouts/base.html' %}
+
+
+{% block title %} Product {% endblock %}
+
+
+{% block stylesheets %}
+
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="row">
+    <div class="content border-bottom w-100">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 col-md-auto d-flex w-100 align-items-center justify-content-between">
+
+                    <ol class="breadcrumb align-items-center">
+                        <h2 class="m-0 pr-3 mr-3 border-right">Product</h2>
+                        <ol class="breadcrumb">
+                            
+                            <li class="breadcrumb-item"><a href="/admin/">Home</a></li>
+                            <li class="breadcrumb-item active">Product List </li>
+                            <li class="breadcrumb-item active"> {{ product.name }} </li>
+                        </ol>
+                    </ol>
+
+
+
+
+                    
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+
+            
+    <div class="col-md-12">
+
+        {% for msg in messages %}
+        
+        <div class="alert alert-success alart-dismissible fade show" role="alert">
+        
+          {{ msg }}
+        
+        </div>     
+    
+      {% endfor %} 
+      </div>
+
+    <div class="col-md-9">
+        <div class="card">
+            <div class="card-body">
+
+                <form method="POST" action="{% url 'update_product' product.id %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                        <div class="modal-body">
+                            
+                                <div class="row mb-3">
+                                    <input hidden="true" name="product-id" value="{{product.id}}"> 
+
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+
+                                            <select class="browser-default custom-select" name="category">
+                                                <option selected> {{ product.category.name }} </option>
+                                                {% for category in categories %}
+                                                <option value="{{ category.id }}">{{ category.name }}</option>
+                                                {% endfor %}
+                                            </select>
+
+                                          
+
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <br>
+                                        <div class="form-group">
+                                            <label for="exampleFormControlInput1">Product Code</label>
+                                            <input type="text" value="{{ product.code }}" name="code" class="form-control" id="exampleFormControlInput1">
+                                          </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <br>
+                                        <div class="form-group">
+                                            <label for="exampleFormControlInput1">Name</label>
+                                            <input type="text" value="{{ product.name }}" name="name" class="form-control" id="exampleFormControlInput1">
+                                          </div>
+                                    </div>
+
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label for="exampleFormControlInput1">Description</label>
+                                            <input type="text" value="{{ product.description }}" name="description" class="form-control" id="exampleFormControlInput1">
+                                          </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="exampleFormControlInput1">Price</label>
+                                            <input type="text" value="{{ product.price }}" name="price" class="form-control" id="exampleFormControlInput1">
+                                          </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="exampleFormControlInput1">Stock</label>
+                                            <input type="text" value="{{ product.stock }}" name="stock" class="form-control" id="exampleFormControlInput1">
+                                          </div>
+                                    </div>
+
+                                    
+                                    <div class="col-sm-12">
+
+                                        <br>
+                                        <p class="file-upload">Currently: <a href="{{ product.image.url }}">{{ product.image.url }}</a>
+                                            <span class="clearable-file-input">
+                                            <input type="checkbox" name="image-clear" id="image-clear_id">
+                                            <label for="image-clear_id">Clear</label></span><br>
+                                            Change:
+                                            <input type="file" name="pimage" accept="image/png, image/jpeg">
+                                        </p>
+
+
+                                    </div>
+
+                                </div>
+                        </div>
+
+                        <div class="modal-footer">
+
+                            
+                            <a data-toggle="modal" data-target="#delete_product " class="btn btn-danger">Delete</a>
+                            <input class="btn btn-info" type="submit" name="confirm" value="Save Changes"> 
+                           
+                          </div>
+
+
+                    </form>
+
+                    {% include 'dashboard/includes/delete_product.html' %}
+                
+
+            </div>
+        </div>
+    </div>
+
+
+ </div>
+
+
+{% endblock %}
+
+
+{% block javascripts %}
+
+
+{% endblock %}

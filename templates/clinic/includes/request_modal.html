@@ -1,0 +1,72 @@
+        <!-- Add appointment Modal -->
+        <div class="modal fade" id="request_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"> Book an appointment </h5>
+                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+
+                </div>
+                <form id="request-form" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                        <div class="modal-body">
+                          <div class="row">
+                              <div class="col-md-12">
+                                  <label class="col-form-label">Please select a date:</label>
+                                  <input type="date" name="date" class="form-control" id="date-input" min="" max="" placeholder="Enter Date" min="{{current_datetime}}" required>
+                              </div>
+                  
+                              <div class="col-md-12">
+                                  <br>
+                                  <div class="form-group">
+                                      <label class="bmd-label-floating">Add comment</label>
+                                      <textarea class="form-control" name="comment"></textarea>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+
+                        
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+                          <input class="btn btn-info my-3" type="submit" value="Send request">
+                      </div>
+
+                </form>
+
+            </div>
+            </div>
+        </div>
+
+        <script>
+          var today = new Date();
+
+          // Format the date as yyyy-mm-dd
+          var yyyy = today.getFullYear();
+          var mm = today.getMonth() + 1;
+          var dd = today.getDate() + 1;
+            
+          if (dd < 10) {
+            dd = '0' + dd;
+          }
+          
+          if (mm < 10) {
+            mm = '0' + mm;
+          }
+          
+          var formattedToday = yyyy + '-' + mm + '-' + dd;
+            
+          // Set the min attribute of the input element to today's date
+          document.getElementById('date-input').setAttribute('min', formattedToday);
+          
+          // Disable today's date in the datepicker
+          var todayOption = document.querySelector('#date-input option[value="' + formattedToday + '"]');
+          if (todayOption) {
+            todayOption.disabled = true;
+          }
+        
+        </script>
+
+
+

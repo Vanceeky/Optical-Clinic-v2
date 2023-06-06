@@ -1,0 +1,277 @@
+{% extends "layouts/base.html" %} {% block title %} Dashboard {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+<style>
+  #today_appointment_filter input[type="search"],
+  #upcoming_appointment_filter input[type="search"] {
+    border: none;
+    border-bottom: 2px solid #00bcd4;
+  }
+
+  #today_appointment_length select,
+  #upcoming_appointment_length select {
+    border: none;
+    color: #aaaaaa;
+  }
+</style>
+
+{% endblock stylesheets %} 
+
+
+{% block content %}
+
+<div class="row">
+
+  <div class="col-md-12">
+
+
+  </div>
+
+
+
+  <div class="col-md-7 mt-4">
+    
+
+
+    <div class="card">
+      <div class="card-header card-header-info">
+        <h4 class="card-title">Patient Profile</h4>
+      </div>
+
+      <div class="card-body">
+
+
+        <div class="row d-flex justify-content-between">
+            <div class="col-md-6">
+
+                    <h5 class="mb-0">{{ appointment.patient.lastname }}, {{ appointment.patient.firstname }}</h5>
+                    <p class="text-muted mb-0">{{ appointment.patient.age}} yrs, {{ appointment.patient.gender}}</p>
+
+                    <small class="text-muted align-items-center">{{ appointment.patient.email}}</small>
+                    <br>
+                    <small class="text-muted align-items-center">{{ appointment.patient.phone}}</small>
+
+
+            </div>
+
+            <div class="col-md-6">
+
+                <div class="d-flex flex-column align-items-center">
+                    <h5 class="mb-0 font-weight-bold">{{ appointment.status }}</h5>
+                    <small class="text-muted mb-0"> Status </small>
+
+
+                    {% if appointment.status == 'Accepted' %}
+
+                    <a class="btn btn-info text-white" data-toggle="modal" data-target="#add_prescription"> Add prescription </a>
+
+                    {% endif %}
+
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-6">
+
+                {% if appointment.status == 'Accepted' %}
+                <a> Appointment date: </a>
+                <br>
+                <small> {{ appointment.appointment_date}} - {{ appointment.appointment_time }}  </small>
+        
+                {% else %}
+                <a> Request date: </a>
+                <br>
+                <small> {{ appointment.request_date}}  </small>
+        
+
+                {% endif %}
+
+            </div>
+
+            <div class="col-md-6 d-flex justify-content-center align-items-center">
+
+
+              {% if appointment.status == 'Accepted' %}
+
+              <div class="dropdown show">
+                <a class="btn btn-primary" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-expanded="false">
+                    Action <i class="material-icons">expand_more</i> 
+                </a>
+          
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+
+                <a class="dropdown-item" data-toggle="modal" data-target="#reschedule_modal"><i class="material-icons">edit</i> Reschedule </a>
+                <div class="dropdown-divider"></div>
+
+                <a href="{% url 'cancel_request' appointment.id %}" class="dropdown-item cancel-request-link" data-patient-id="{{ app.patient.id }}">
+                  <i class="material-icons">cancel</i> Cancel
+                </a>
+                </div>
+            </div> 
+
+            
+
+            {% include 'dashboard/includes/reschedule.html' %}
+
+
+              {% endif %}
+
+              {% if appointment.status == 'Pending' %}
+
+              <form id="set-appointment-form" action="{% url 'set_appointment' appointment.id %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <input hidden="true" name="appointment-id" value="{{ app.id }}">
+                <span class="bmd-form-group"><div class="input-group input-group-static my-3">
+                  <input type="time" id="time" name="time" min="09:00" max="18:00" class="form-control" required="">
+                  <button type="submit" class="btn btn-fab btn-round btn-primary"  data-toggle="tooltip" data-placement="top" title=" Set time">
+                      <i class="material-icons">send</i>
+                  <div class="ripple-container"></div></button>
+
+
+                </div></span>
+
+                
+              </form>
+
+
+
+              
+
+
+              {% endif %}
+
+                
+                
+
+            </div>
+        </div>
+
+
+
+
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-5 mt-4">
+    <div class="card h-100 mb-4">
+      <div class="card-header pb-0 px-3">
+        <div class="row">
+          <div class="col-md-6">
+            <h4 class="font-weight-bold"> Medications: </h4>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="card-body pt-4 p-3">
+
+              
+        {% for med in prescription %}
+
+        <div class="row">
+
+            <div class="col-md-8">
+              <div class="form-group">
+                <label for="exampleFormControlInput1">Date Range: </label>
+                <input type="text" class="form-control cursor-pointer" id="exampleFormControlInput1" value="{{ med.date_start }} - {{ med.date_end}}" disabled>
+              </div>
+            </div>
+
+          <div class="col-md-6">
+
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Name: </label>
+              <input type="text" class="form-control cursor-pointer" id="exampleFormControlInput1" value="{{ med.name }}" disabled>
+            </div>
+
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Medicine Type: </label>
+              <input type="text" class="form-control cursor-pointer" id="exampleFormControlInput1" value="{{ med.medicine_type }}" disabled>
+            </div>
+
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Duration: </label>
+              <input type="text" class="form-control cursor-pointer" id="exampleFormControlInput1" value="{{ med.duration }}" disabled>
+            </div>
+
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Usage: </label>
+              <input type="text" class="form-control cursor-pointer" id="exampleFormControlInput1" value="{{ med.usage }}" disabled>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="exampleFormControlTextarea1">Comment: </label>
+              <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" disabled>{{ med.comment }}</textarea>
+            </div>
+                
+          </div>
+    
+        </div>
+
+        
+        <hr>
+
+
+        
+        {% endfor %}
+
+
+      </div>
+
+    </div>
+  </div>
+
+
+</div>
+
+
+{% include 'dashboard/includes/add_prescription_modal.html' %}
+
+{% endblock %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+
+
+    <script>
+
+      var dateInput = document.getElementById("date");
+
+      // Set the "min" attribute of the date input field to the current date
+      dateInput.setAttribute("min", new Date().toISOString().split('T')[0]);
+
+    </script>
+
+<script>
+  $(document).ready(function () {
+    $("#today_appointment").DataTable();
+  });
+
+  $(document).ready(function () {
+    $("#upcoming_appointment").DataTable();
+  });
+</script>
+
+<script
+  type="text/javascript"
+  charset="utf8"
+  src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"
+></script>
+
+{% endblock javascripts %}

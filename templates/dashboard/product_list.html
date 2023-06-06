@@ -1,0 +1,161 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+  <style>
+
+    #table_filter input[type=search]{
+      border: none;
+      border-bottom: 2px solid #00bcd4;
+    }
+
+    #table_length select{
+      border: none;
+      color: #AAAAAA;
+      
+    }
+  </style>
+
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+
+    <!-- STATS -->
+
+
+    <div class="row">
+        <div class="content border-bottom w-100">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12 col-md-auto d-flex w-100 align-items-center justify-content-between">
+
+                        <ol class="breadcrumb align-items-center">
+                            <h2 class="m-0 pr-3 mr-3 border-right">Inventory</h2>
+                            <ol class="breadcrumb">
+                                
+                                <li class="breadcrumb-item"><a href="/admin/">Home</a></li>
+                                <li class="breadcrumb-item active">Products</li>
+                            </ol>
+                        </ol>
+
+
+
+                         <div class="col-12 col-md-auto d-flex align-items-center justify-content-end flex-end page-actions">
+                              <a href="/admin/auth/user/add/" class="btn btn-success float-right" data-toggle="modal" data-target="#add_product">
+                                <i class="fa fa-plus-circle"></i> &nbsp; Add New Product
+                            </a>
+
+                                 
+                        </div> 
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- END STATS -->
+
+    <div class="row">
+
+        
+      <div class="col-md-12">
+
+
+      </div>
+
+        <div class="card">
+            <div class="card-header card-header-info">
+              <h4 class="card-title">Product List </h4>
+            </div>
+            <div class="card-body table-responsive">
+                <table id="table" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th class="text-center"></th>
+                                <th>Product</th>
+                                <th>Category</th>
+                                <th class="th-description">Description</th>
+                                <th class="th-description">Stock</th>
+                                <th class="text-center">Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for prod in product_list %}
+
+                            <tr>
+                                <td class="text-center">
+                                    <div class="img-container">
+                                        <img src="{{ prod.image.url }}" rel="nofollow" alt="..." style="width: 50px">
+                                    </div>
+                                </td>
+                                <td class="td-name">
+                                    <a href="{% url 'product_profile' prod.id %}">{{ prod.name }}</a>
+                                    <br><small>{{ prod.code }}</small>
+                                </td>
+                                <td>{{ prod.category}} </td>
+                                <td>
+                                    {{ prod.description }}
+                                </td>
+                                <td>
+                                    {{ prod.stock }}
+                                </td>
+                                <td>
+                                    <small>₱</small>{{ prod.price }}
+                                </td>
+
+
+                            </tr>
+                            
+
+                            {% endfor %}
+
+                        </tbody>
+                </table>
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+    {% include 'dashboard/includes/add_product.html' %}
+    {% include 'dashboard/includes/add_order.html' %}
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+    <script>
+
+      $(document).ready( function () {
+        $('#table').DataTable();
+      } );
+
+
+
+    </script>
+
+
+  <script>
+    $(document).ready(function() {
+      // Javascript method's body can be found in assets/js/demos.js
+      md.initDashboardPageCharts();
+
+    });
+  </script>
+
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
+
+
+
+{% endblock javascripts %}

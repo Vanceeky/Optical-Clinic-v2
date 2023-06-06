@@ -1,0 +1,150 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+  <style>
+
+    #table_filter input[type=search]{
+      border: none;
+      border-bottom: 2px solid #00bcd4;
+    }
+
+    #table_length select{
+      border: none;
+      color: #AAAAAA;
+      
+    }
+  </style>
+
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+
+    <!-- STATS -->
+
+
+    <div class="row">
+        <div class="content border-bottom w-100">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12 col-md-auto d-flex w-100 align-items-center justify-content-between">
+
+                        <ol class="breadcrumb align-items-center">
+                            <h2 class="m-0 pr-3 mr-3 border-right">Inventory</h2>
+                            <ol class="breadcrumb">
+                                
+                                <li class="breadcrumb-item"><a href="/admin/">Home</a></li>
+                                <li class="breadcrumb-item active">Sales</li>
+                            </ol>
+                        </ol>
+
+                            <a href="/admin/auth/user/add/" class="btn btn-success float-right" data-toggle="modal" data-target="#add_order">
+                                <i class="fa fa-plus-circle"></i> &nbsp; Add sales
+                            </a>
+                                 
+                        </div> 
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- END STATS -->
+
+    <div class="row container-fluid">
+
+        
+      <div class="col-md-12">
+
+      </div>
+
+        <div class="card">
+            <div class="card-header card-header-info">
+              <h4 class="card-title">Sales List </h4>
+            </div>
+            <div class="card-body table-responsive">
+                <table id="table" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th class="text-center"></th>
+                                <th>Product</th>
+                                <th>Date added</th>
+                                <th class="th-description">Price</th>
+                                <th class="th-description">Quantity</th>
+                                <th class="text-center">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for sale in sales %}
+
+                            <tr>
+                                <td>
+                                    {{ sale.id }}
+                                </td>
+                                <td class="td-name">
+                                    <a href="">{{ sale.product }}</a>
+                                </td>
+                                <td>{{ sale.date_created}} </td>
+                                <td>
+                                    {{ sale.product.price }}
+                                </td>
+                                <td>
+                                    {{ sale.qty }}
+                                </td>
+                                <td>
+                                    <small>₱</small>{{ sale.total }}
+                                </td>
+
+
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+                </table>
+            </div>
+
+        </div>
+
+
+
+    </div>
+    {% include 'dashboard/includes/add_order.html' %}
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+    <script>
+
+      $(document).ready( function () {
+        $('#table').DataTable();
+      } );
+
+
+
+    </script>
+
+
+  <script>
+    $(document).ready(function() {
+      // Javascript method's body can be found in assets/js/demos.js
+      md.initDashboardPageCharts();
+
+    });
+  </script>
+
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
+
+
+
+{% endblock javascripts %}

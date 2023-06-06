@@ -1,0 +1,208 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+  <style>
+
+    #today_appointment_filter input[type=search], #upcoming_appointment_filter input[type=search]{
+      border: none;
+      border-bottom: 2px solid #00bcd4;
+    }
+
+    #today_appointment_length select, #upcoming_appointment_length select{
+      border: none;
+      color: #AAAAAA;
+      
+    }
+  </style>
+
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+    <!-- STATS -->
+    <div class="row">
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+          <div class="card-header card-header-warning card-header-icon">
+            <div class="card-icon">
+              <i class="material-icons">done_all</i>
+            </div>
+            <p class="card-category">Total Appointments</p>
+            <h3 class="card-title">{{ total_appointments }}
+              <small></small>
+            </h3>
+          </div>
+          <div class="card-footer">
+            <div class="stats">
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+          <div class="card-header card-header-success card-header-icon">
+            <div class="card-icon">
+              <i class="material-icons">pending_actions</i>
+            </div>
+            <p class="card-category">Pending Request</p>
+            <h3 class="card-title">{{ pending_request }}</h3>
+          </div>
+          <div class="card-footer">
+            <div class="stats">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+          <div class="card-header card-header-danger card-header-icon">
+            <div class="card-icon">
+              <i class="material-icons">inventory</i>
+            </div>
+            <p class="card-category">Total Sales</p>
+            <h3 class="card-title">{{ sales }}</h3>
+          </div>
+          <div class="card-footer">
+            <div class="stats">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+          <div class="card-header card-header-info card-header-icon">
+            <div class="card-icon">
+              <i class="material-icons">shopping_cart</i>
+            </div>
+            <p class="card-category">Products</p>
+            <h3 class="card-title">{{ products }}</h3>
+          </div>
+          <div class="card-footer">
+            <div class="stats">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- END STATS -->
+
+    <div class="row">
+
+      <!-- TODAYS APPOINTMENT -->
+      <div class="col-lg-6 col-md-12">
+        <div class="card">
+          <div class="card-header card-header-info">
+            <h4 class="card-title">Today's Appointments </h4>
+            <p class="card-category">{{ todays_date }}</p>
+          </div>
+          <div class="card-body table-responsive">
+            <table id="today_appointment" class="table table-hover">
+              <thead class="text-warning">
+                <th>ID</th>
+                <th>Name</th>
+                <th>Time</th>
+              </thead>
+              <tbody>
+
+                {% for app in today %}
+                
+
+                <tr>
+                  <td>{{ app.id }}</td>
+                  <td>
+                    <h5 class="mb-0"><a href="{% url 'patient_profile' app.id %}">{{ app.patient.lastname}}, {{ app.patient.firstname }} </a></h5>
+                  </td>
+
+                  <td>{{ app.appointment_time }} </td>
+                </tr>
+
+                {% endfor %}
+
+
+                
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- UPCOMING APPOINTMENT -->
+      <div class="col-lg-6 col-md-12">
+        <div class="card">
+          <div class="card-header card-header-info">
+            <h4 class="card-title">Upcoming Appointments</h4>
+            <p class="card-category"></p>
+          </div>
+          <div class="card-body table-responsive">
+            <table id="upcoming_appointment" class="table table-hover">
+              <thead class="text-warning">
+                <th>ID</th>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Time</th>
+              </thead>
+              <tbody>
+
+                {% for app in upcoming %}
+                
+
+                <tr>
+                  <td>{{ app.id }}</td>
+                  <td>
+                    <h5 class="mb-0"><a href="{% url 'patient_profile' app.id %}">{{ app.patient.lastname}}, {{ app.patient.firstname }} </a></h5>
+                  </td>
+                  <td>{{ app.appointment_date }} </td>
+                  <td>{{ app.appointment_time }} </td>
+                </tr>
+
+                {% endfor %}
+
+
+                
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+    <script>
+
+      $(document).ready( function () {
+        $('#today_appointment').DataTable();
+      } );
+
+    $(document).ready( function () {
+      $('#upcoming_appointment').DataTable();
+      } );
+
+    </script>
+
+
+  <script>
+    $(document).ready(function() {
+      // Javascript method's body can be found in assets/js/demos.js
+      md.initDashboardPageCharts();
+
+    });
+  </script>
+
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
+
+
+
+{% endblock javascripts %}

@@ -1,0 +1,177 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+  <style>
+
+    #all_request_filter input[type=search]{
+      border: none;
+      border-bottom: 2px solid #00bcd4;
+    }
+
+    #all_request_length select{
+      border: none;
+      color: #AAAAAA;
+      
+    }
+  </style>
+
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+
+    <!-- STATS -->
+
+
+    <div class="row">
+        <div class="content border-bottom w-100">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12 col-md-auto d-flex w-100 align-items-center justify-content-between">
+
+                        <ol class="breadcrumb align-items-center">
+                            <h2 class="m-0 pr-3 mr-3 border-right">Patients </h2>
+                            <ol class="breadcrumb">
+                                
+                                <li class="breadcrumb-item"><a href="/admin/">Home</a></li>
+                                <li class="breadcrumb-item active">Patient list</li>
+                            </ol>
+                        </ol>
+
+
+
+                         <div class="col-12 col-md-auto d-flex align-items-center justify-content-end flex-end page-actions">
+
+{% comment %}                             <a href="/admin/auth/user/add/" class="btn btn-success float-right">
+                                <i class="fa fa-plus-circle"></i> &nbsp; Add Patient
+                            </a> {% endcomment %}
+                                 
+                        </div> 
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- END STATS -->
+
+    <div class="row">
+
+      <!-- ALL APPOINTMENT -->
+      <div class="col-lg-12 col-md-12">
+        <div class="card">
+          <div class="card-header card-header-info">
+            <h4 class="card-title">Patient Information </h4>
+          </div>
+          <div class="card-body table-responsive">
+            <table id="all_request" class="table table-hover">
+              <thead class="text-warning">
+                <th>ID</th>
+                <th>Patient</th>
+                <th>Appointment </th>
+                <th>Contact </th>
+                <th>Status</th>
+              </thead>
+              <tbody>
+                
+                {% for app in appointments %}
+                
+
+                <tr>
+                    <td>{{ patient.id }}</td>
+
+                    <td>
+                        <div class="user-info__basic">
+                            <h5 class="mb-0"><a href="{% url 'patient_profile' app.id %}">{{ app.patient.lastname}}, {{ app.patient.firstname }} </a> </h5>
+                            <p class="text-muted mb-0">{{ app.patient.age }} yrs old, {{ app.patient.gender }}</p>
+                        </div>
+                    </td>
+
+                    <td>
+                        <h6 class="mb-0">{{ app.appointment_time }}</h6>
+                        <small>{{app.appointment_date }}</small>
+                    </td>
+                    <td>
+                        <h6 class="mb-0">{{ app.patient.phone }}</h6>
+                        <a href=""><small>{{ app.patient.email }}</small></a>
+                    </td>
+
+                    <td> 
+                        {% if app.status == 'Accepted' %} 
+
+                        <span class="btn btn-info">Accepted</span>
+    
+                        {% endif %}
+
+                        {% if app.status == 'Cancelled' %} 
+
+                        <span class="btn btn-info">Cancelled</span>
+    
+                        {% endif %}
+    
+                        {% if app.status == 'Pending' %} 
+    
+                        <span class="btn btn-warning">Pending</span>
+    
+                        {% endif %}
+    
+                        {% if app.status == 'Completed' %} 
+    
+                        <span class="btn btn-success">Completed</span>
+    
+                        {% endif %}
+                    </td>
+                                  
+                </tr>
+
+                {% endfor %}
+
+
+
+                
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+    <script>
+
+      $(document).ready( function () {
+        $('#all_request').DataTable();
+      } );
+
+
+
+    </script>
+
+
+  <script>
+    $(document).ready(function() {
+      // Javascript method's body can be found in assets/js/demos.js
+      md.initDashboardPageCharts();
+
+    });
+  </script>
+
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
+
+
+
+{% endblock javascripts %}

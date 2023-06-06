@@ -1,0 +1,457 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8" />
+  <link rel="apple-touch-icon" sizes="76x76" href="/static/assets/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="/static/assets/img/favicon.png">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <link rel="canonical" href="https://appseed.us/admin-dashboards/django-dashboard-material">
+
+  <title>
+    OCMS - {% block title %}{% endblock %} | AppSeed
+  </title>
+
+  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+  <!--     Fonts and icons     -->
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+  <!-- CSS Files -->
+  <link href="/static/assets/css/material-dashboard.css?v=2.1.2" rel="stylesheet" />
+  <!-- CSS Just for demo purpose, don't include it in your project -->
+  <link href="/static/assets/demo/demo.css" rel="stylesheet" />
+
+  <!-- dataTables CSS -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.css">
+  
+
+  <!-- Specific Page CSS goes HERE  -->
+  {% block stylesheets %}{% endblock stylesheets %}
+
+</head>
+
+<body class="">
+  <div class="wrapper">
+
+    {% include 'includes/sidebar.html' %}
+
+    <div class="main-panel">
+
+      {% include 'includes/navigation.html' %}
+
+      <!-- End Navbar -->
+      <div class="content">
+        <div class="container-fluid">
+
+          {% block content %}
+          
+          
+          
+          
+          {% endblock content %}
+
+        </div>
+      </div>
+
+      {% include 'includes/footer.html' %}
+
+    </div>
+  </div>
+
+
+  {% include 'includes/scripts.html' %}
+
+  {% include 'includes/scripts-sidebar.html' %}
+
+  
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+  
+  <!-- Specific Page JS goes HERE  -->
+  {% block javascripts %}
+
+
+  
+  {% endblock javascripts %}
+
+  <script>
+    $(document).ready(function() {
+      $('#appointment-form').submit(function(event) {
+        event.preventDefault();  // Prevent the default form submission
+    
+        $.ajax({
+          url: $(this).attr('action'),
+          type: 'POST',
+          data: new FormData(this),
+          processData: false,
+          contentType: false,
+          success: function(response) {
+            // Display success message using SweetAlert2
+            Swal.fire({
+              icon: 'success',
+              title: 'Success',
+              text: 'New appointment added!',
+              confirmButtonText: 'OK'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                // Reload the page or redirect to another page
+                location.reload();  // Example: Reload the current page
+              }
+            });
+          },
+          error: function(xhr, status, error) {
+            // Display error message using SweetAlert2
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'An error occurred while adding the appointment. Please try again later.',
+              confirmButtonText: 'OK'
+            });
+          }
+        });
+      });
+    });
+    
+  </script>
+
+  <script>
+    $(document).ready(function() {
+      $('#set-appointment-form').submit(function(event) {
+        event.preventDefault();  // Prevent the default form submission
+    
+        // Show loading spinner
+        Swal.fire({
+          title: 'Loading',
+          text: 'Please wait...',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          showConfirmButton: false,
+          onBeforeOpen: () => {
+            Swal.showLoading();
+          }
+        });
+    
+        $.ajax({
+          url: $(this).attr('action'),
+          type: 'POST',
+          data: new FormData(this),
+          processData: false,
+          contentType: false,
+          success: function(response) {
+            // Hide loading spinner
+            Swal.close();
+    
+            // Display success message using SweetAlert2
+            Swal.fire({
+              icon: 'success',
+              title: 'Success',
+              text: 'Appointment has been saved!',
+              confirmButtonText: 'OK'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                // Reload the page or redirect to another page
+                location.reload();  // Example: Reload the current page
+              }
+            });
+          },
+          error: function(xhr, status, error) {
+            // Hide loading spinner
+            Swal.close();
+    
+            // Display error message using SweetAlert2
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'An error occurred while saving the appointment. Please try again later.',
+              confirmButtonText: 'OK'
+            });
+          }
+        });
+      });
+    });
+    
+
+  </script>
+
+  <script>
+
+    $(document).ready(function() {
+      $('.cancel-request-link').click(function(event) {
+        event.preventDefault(); // Prevent the default link behavior
+    
+        var link = $(this);
+    
+        Swal.fire({
+          title: 'Are you sure?',
+          text: 'This request will be cancelled.',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, cancel',
+          cancelButtonText: 'No, keep it'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // Show loading spinner
+            Swal.showLoading();
+    
+            // Get the CSRF token value from the cookie
+            var csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    
+            $.ajax({
+              url: link.attr('href'),
+              type: 'POST',
+              data: {
+                patient_id: link.data('patient-id')
+              },
+              dataType: 'json',
+              beforeSend: function(xhr, settings) {
+                // Include the CSRF token in the request headers
+                xhr.setRequestHeader('X-CSRFToken', csrftoken);
+              },
+              success: function(response) {
+                // Hide loading spinner
+                Swal.close();
+    
+                if (response.message) {
+                  // Display success message using SweetAlert2
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: response.message,
+                    confirmButtonText: 'OK'
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      // Reload the page or redirect to another page
+                      location.reload(); // Example: Reload the current page
+                    }
+                  });
+                } else {
+                  // Display error message using SweetAlert2
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An error occurred while cancelling the request. Please try again later.',
+                    confirmButtonText: 'OK'
+                  });
+                }
+              },
+              error: function(xhr, status, error) {
+                // Hide loading spinner
+                Swal.close();
+    
+                // Display error message using SweetAlert2
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Error',
+                  text: 'An error occurred while cancelling the request. Please try again later.',
+                  confirmButtonText: 'OK'
+                });
+              }
+            });
+          }
+        });
+      });
+    });
+    
+    
+  </script>
+
+  <script>
+    $(document).ready(function() {
+      $('.reschedule-appointment-form').submit(function(event) {
+        event.preventDefault(); // Prevent the default form submission
+    
+        var form = $(this);
+    
+        Swal.fire({
+          title: 'Are you sure?',
+          text: 'This appointment will be rescheduled.',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, reschedule',
+          cancelButtonText: 'No, keep it'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // Show loading spinner
+            Swal.showLoading();
+    
+            $.ajax({
+              url: form.attr('action'),
+              type: 'POST',
+              data: form.serialize(),
+              dataType: 'json',
+              success: function(response) {
+                // Hide loading spinner
+                Swal.close();
+    
+                if (response.message) {
+                  // Display success message using SweetAlert2
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: response.message,
+                    confirmButtonText: 'OK'
+                  }).then((result) => {
+                    
+                    if (result.isConfirmed) {
+                      // Update the appointment details on the page
+                      $('.appointment-details .fname').text(response.appointment.fname);
+                      $('.appointment-details .lname').text(response.appointment.lname);
+                      $('.appointment-details .date').text(response.appointment.date);
+                      $('.appointment-details .time').text(response.appointment.time);
+                    }
+
+                location.reload();  // Example: Reload the current page
+                  });
+                } else {
+                  // Display error message using SweetAlert2
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An error occurred while rescheduling the appointment. Please try again later.',
+                    confirmButtonText: 'OK'
+                  });
+                }
+              },
+              error: function(xhr, status, error) {
+                // Hide loading spinner
+                Swal.close();
+    
+                // Display error message using SweetAlert2
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Error',
+                  text: 'An error occurred while rescheduling the appointment. Please try again later.',
+                  confirmButtonText: 'OK'
+                });
+              }
+            });
+          }
+        });
+      });
+    });
+    
+  </script>
+
+
+  <script>
+    $(document).ready(function() {
+      $('#category-form').on('submit', function(event) {
+          event.preventDefault();
+          var form = $(this);
+          var url = form.attr('action');
+          var formData = new FormData(form[0]);
+   
+          // Submit the form via AJAX
+          $.ajax({
+              type: 'POST',
+              url: url,
+              data: formData,
+              processData: false,
+              contentType: false,
+              success: function(response) {
+                  // Display success notification
+                  Swal.fire({
+                      icon: 'success',
+                      title: 'New category added!',
+                      showConfirmButton: false,
+                      timer: 1500
+                  }).then(function() {
+                      // Redirect to the desired page after the notification is closed
+                      location.reload(); 
+                  });
+              },
+              error: function(xhr, textStatus, error) {
+                  // Display error notification
+                  Swal.fire({
+                      icon: 'error',
+                      title: 'Error',
+                      text: 'An error occurred while adding the category.',
+                  });
+              }
+          });
+      });
+   });
+   
+  </script>
+
+  <script>
+    $(document).ready(function() {
+      $('#product-form').on('submit', function(event) {
+          event.preventDefault();
+          var form = $(this);
+          var url = form.attr('action');
+          var formData = new FormData(form[0]);
+  
+          // Submit the form via AJAX
+          $.ajax({
+              type: 'POST',
+              url: url,
+              data: formData,
+              processData: false,
+              contentType: false,
+              success: function(response) {
+                  Swal.fire({
+                      icon: 'success',
+                      title: 'New Product added!',
+                      showConfirmButton: false,
+                      timer: 1500
+                  }).then(function() {
+                      window.location.href = "{% url 'product_list' %}";
+                  });
+              },
+              error: function(xhr, textStatus, error) {
+                  Swal.fire({
+                      icon: 'error',
+                      title: 'Error',
+                      text: 'An error occurred while adding the product.',
+                  });
+              }
+          });
+      });
+  });
+  
+  </script>
+
+  <script>
+    $(document).ready(function() {
+      $('#sale-form').on('submit', function(event) {
+          event.preventDefault();
+          var form = $(this);
+          var url = form.attr('action');
+          var formData = new FormData(form[0]);
+  
+          // Submit the form via AJAX
+          $.ajax({
+              type: 'POST',
+              url: url,
+              data: formData,
+              processData: false,
+              contentType: false,
+              success: function(response) {
+                  Swal.fire({
+                      icon: 'success',
+                      title: 'New sales added!',
+                      showConfirmButton: false,
+                      timer: 1500
+                  }).then(function() {
+                      window.location.href = "{% url 'sales' %}";
+                  });
+              },
+              error: function(xhr, textStatus, error) {
+                  Swal.fire({
+                      icon: 'error',
+                      title: 'Error',
+                      text: 'An error occurred while adding the sale.',
+                  });
+              }
+          });
+      });
+  });
+  
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,131 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+  <style>
+
+    #all_request_filter input[type=search]{
+      border: none;
+      border-bottom: 2px solid #00bcd4;
+    }
+
+    #all_request_length select{
+      border: none;
+      color: #AAAAAA;
+      
+    }
+  </style>
+
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+
+    <!-- STATS -->
+
+
+    <div class="row">
+        <div class="content border-bottom w-100">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12 col-md-auto d-flex w-100 align-items-center justify-content-between">
+
+                        <ol class="breadcrumb align-items-center">
+                            <h2 class="m-0 pr-3 mr-3 border-right">Inventory</h2>
+                            <ol class="breadcrumb">
+                                
+                                <li class="breadcrumb-item"><a href="/admin/">Home</a></li>
+                                <li class="breadcrumb-item active">Categories</li>
+                            </ol>
+                        </ol>
+
+
+
+                         <div class="col-12 col-md-auto d-flex align-items-center justify-content-end flex-end page-actions">
+
+                            <a href="/admin/auth/user/add/" class="btn btn-success float-right" data-toggle="modal" data-target="#add_category">
+                                <i class="fa fa-plus-circle"></i> &nbsp; Add New Category
+                            </a>
+                                 
+                        </div> 
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- END STATS -->
+
+    <div class="row">
+
+      <section style="background-color: #eee;">
+          <div class="row justify-content-center">
+
+            {% for cat in categories %}
+            <div class="col-md-3">
+              <a href="#">
+              <div class="card text-black">
+                <img src="{{ cat.image.url }}"
+                  class="card-img-top" alt="Apple Computer" />
+                 
+                  <div class="card-body">
+                    <div class="text-center">
+                      <h5 class="card-title">{{ cat.name }}</h5>
+                      <p class="text-muted mb-4">{{cat.description}}</p>
+                    </div>
+                  <div>
+                  
+                  </div>
+                  <div class="d-flex justify-content-between total font-weight-bold mt-4">
+                    <span>Products</span><span>5</span>
+                  </div>
+                </a>
+                </div>
+              </div>
+            </div>
+
+            {% endfor %}
+          </div>
+
+      </section>
+    </div>
+
+
+
+    {% include 'dashboard/includes/add_category.html' %}
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+    <script>
+
+      $(document).ready( function () {
+        $('#all_request').DataTable();
+      } );
+
+
+
+    </script>
+
+
+  <script>
+    $(document).ready(function() {
+      // Javascript method's body can be found in assets/js/demos.js
+      md.initDashboardPageCharts();
+
+    });
+  </script>
+
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
+
+
+
+{% endblock javascripts %}

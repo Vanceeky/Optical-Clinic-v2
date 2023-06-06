@@ -1,0 +1,88 @@
+        <!-- Add product Modal -->
+        <div class="modal fade" id="add_product" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"> Add new Product: </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <form method="POST" action="{% url 'add_product' %}" id="product-form" enctype="multipart/form-data">
+                    {% csrf_token %}
+                        <div class="modal-body">
+                            
+                                <div class="row mb-3">
+                                    <input hidden="true" name="product-id" value="{{app.id}}"> 
+
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+
+                                            <select class="browser-default custom-select" name="category">
+                                                <option selected> Category </option>
+                                                {% for category in categories %}
+                                                <option value="{{ category.id }}">{{ category.name }}</option>
+                                                {% endfor %}
+                                              </select>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        
+                                        <div class="form-group">
+                                          <label class="bmd-label-floating">Product code</label>
+                                          <input type="text" name="code" class="form-control" required>
+                                        </div>
+                                        <br>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                          <label class="bmd-label-floating">Name</label>
+                                          <input type="text text-capitalize" name="name" class="form-control" required>
+                                        </div>
+                                        <br>
+                                    </div>
+
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                          <label class="bmd-label-floating">Description</label>
+                                          <input type="text" name="description" class="form-control" required>
+                                        </div>
+                                        <br>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                          <label class="bmd-label-floating">Price</label>
+                                          <input type="number" name="price" class="form-control" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                          <label class="bmd-label-floating">Stock</label>
+                                          <input type="number" name="stock" class="form-control" required>
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="col-sm-12">
+
+                                        <label> Image: </label>
+                                        <input type="file" name="p_image" accept="image/png, image/jpeg" required>
+
+                                    </div>
+
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <input class="btn btn-info my-3" type="submit" value="Save Changes">
+                        </div>
+
+                </form>
+
+            </div>
+            </div>
+        </div>

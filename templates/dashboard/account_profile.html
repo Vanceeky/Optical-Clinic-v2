@@ -1,0 +1,87 @@
+{% extends 'layouts/base.html' %} 
+
+{% block title %} {{ request.user }} - Profile {% endblock %} 
+
+{% block stylesheets %} 
+
+
+{% endblock %} 
+
+{% block content %}
+
+<div class="container-fluid">
+
+    {% for msg in messages %}
+
+    <span class="btn btn-success"> {{ msg }} </span>
+
+    {% endfor %}
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header card-header-primary">
+          <h4 class="card-title">Edit Profile</h4>
+          <p class="card-category">Complete your profile</p>
+        </div>
+        <div class="card-body">
+          <form action="{% url 'update_profile' %}" method="POST">
+            {% csrf_token %}
+            <div class="row">
+            
+              <div class="col-md-5">
+                <div class="form-group bmd-form-group is-filled">
+                  <label class="bmd-label-floating">UserID (disabled)</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    disabled=""
+                    value="{{ request.user.id}}"
+                  />
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group bmd-form-group is-filled">
+                  <label class="bmd-label-floating">Username</label>
+                  <input type="text" class="form-control" name="username" value="{{ request.user.username}}" />
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group bmd-form-group is-filled">
+                  <label class="bmd-label-floating">Email address</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    value="{{ request.user.email }}"
+                    name="email"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group bmd-form-group">
+                  <label class="bmd-label-floating">Fist Name</label>
+                  <input type="text" class="form-control" name="firstname" value="{{ request.user.first_name}}"/>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group bmd-form-group">
+                  <label class="bmd-label-floating">Last Name</label>
+                  <input type="text" class="form-control" name="lastname" value="{{ request.user.last_name}}"/>
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" name="submit" class="btn btn-primary pull-right">
+              Update Profile
+            </button>
+            <div class="clearfix"></div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

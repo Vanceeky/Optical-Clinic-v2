@@ -1,0 +1,145 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+  <style>
+
+    #accepted_request_filter input[type=search]{
+      border: none;
+      border-bottom: 2px solid #00bcd4;
+    }
+
+    #accepted_request_length select{
+      border: none;
+      color: #AAAAAA;
+      
+    }
+  </style>
+
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+
+
+    <!-- STATS -->
+    <div class="row">
+        <div class="content border-bottom w-100">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12 col-md-auto d-flex w-100 align-items-center justify-content-between">
+
+                        <ol class="breadcrumb align-items-center">
+                            <h2 class="m-0 pr-3 mr-3 border-right">Appointment</h2>
+                            <ol class="breadcrumb">
+                                
+                                <li class="breadcrumb-item"><a href="/admin/">Home</a></li>
+                                <li class="breadcrumb-item active">Accepted request</li>
+                            </ol>
+                        </ol>
+
+
+
+                         <div class="col-12 col-md-auto d-flex align-items-center justify-content-end flex-end page-actions">
+
+                            <a href="/admin/auth/user/add/" class="btn btn-success float-right" data-toggle="modal" data-target="#add_appointment">
+                                <i class="fa fa-plus-circle"></i> &nbsp; Add Appointment
+                            </a>
+                                 
+                        </div> 
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- END STATS -->
+
+    <div class="row">
+
+      <!-- ALL APPOINTMENT -->
+      <div class="col-lg-12 col-md-12">
+        <div class="card">
+          <div class="card-header card-header-info">
+            <h4 class="card-title">Accepted request </h4>
+          </div>
+          <div class="card-body table-responsive">
+            <table id="accepted_request" class="table table-hover">
+              <thead class="text-warning">
+                <th>ID</th>
+                <th>Name</th>
+                <th>Requested date: </th>
+                <th>Appointment date: </th>
+                <th>Time</th>
+                <th>Status</th>
+              </thead>
+              <tbody>
+                {% for app in appointments %}
+
+                {% if app.status == 'Accepted' %}
+
+                <tr>
+                  <td>1</td>
+                  <td><h5 class="mb-0"><a href="{% url 'patient_profile' app.id %}">{{ app.patient.lastname}}, {{ app.patient.firstname }} </a> </h5></td>
+                  <td> {{ app.request_date }} </td>
+                  <td> {{ app.appointment_date }} </td>
+                  <td> {{ app.appointment_time }} </td>
+                  <td> 
+
+                    <span class="btn btn-info">Accepted</span>
+                  
+                  </td>
+                  
+                </tr>
+
+                {% endif %}
+
+                {% endfor %}
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div>
+
+    {% include 'dashboard/includes/add_appointment_modal.html' %}
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+    <script>
+
+      $(document).ready( function () {
+        $('#accepted_request').DataTable();
+      } );
+
+
+
+    </script>
+
+
+  <script>
+    $(document).ready(function() {
+      // Javascript method's body can be found in assets/js/demos.js
+      md.initDashboardPageCharts();
+
+    });
+  </script>
+
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
+
+
+
+{% endblock javascripts %}

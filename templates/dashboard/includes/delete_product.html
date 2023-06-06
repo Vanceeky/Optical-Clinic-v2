@@ -1,0 +1,26 @@
+        <!-- Delete Modal -->
+        <div id="delete_product" class="modal fade">
+            <div class="modal-dialog">
+              <div class="modal-content text-center">
+                    
+                        <div class="modal-header">						
+                            <h4 class="modal-title"> Remove Product </h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        
+                        <div class="modal-body">					
+                            <p>Are you sure you want to remove this product?  </p>
+                            <p class="text-warning"><small>This action cannot be undone.</small></p>
+                        </div>
+                        <div class="modal-footer">
+                          <form action="{% url 'delete_product' product.id %}"method = "POST">
+                            {% csrf_token %}
+                            <input class="btn btn-danger" type="submit" name="confirm" value="Confirm"> 
+                          </form>
+                        </div>
+                    
+              </div>
+            </div>
+        </div>

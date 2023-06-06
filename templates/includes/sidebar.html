@@ -1,0 +1,122 @@
+    <div class="sidebar" data-color="purple" data-background-color="white">
+      <div class="logo">
+        <a rel="noopener noreferrer" 
+           href="{% url 'home' %}" class="simple-text logo-normal">
+          Optical Clinic <br> Management System
+        </a>
+      </div>
+      <div class="sidebar-wrapper">
+        <ul class="nav">
+
+        {% if request.user.is_authenticated %}
+
+        {% url 'index' as url %}
+
+        <li class="nav-item {% if request.path == url %} active {% endif %}">
+          <a class="nav-link" href="{% url 'index' %}">
+            <i class="material-icons">dashboard</i>
+            <p>Dashboard </p>
+          </a>
+        </li>
+
+        <div id="accordion">
+          
+                <li class="nav-item ">
+                  <a class="nav-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" href="/">
+                    <i class="material-icons">content_paste</i>
+                  
+                    <p class="dropdown-toggle"> Appointment  </p> 
+                  </a>
+                  
+
+
+                </li>
+
+              <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                {% url 'all_request' as url %}
+                  <li class="nav-item px-4 {% if request.path == url %} active {% endif %}">
+                    <a class="nav-link" href="{% url 'all_request' %}">
+                      <i class="material-icons">list</i>
+                      <p class="">All request </p>
+                    </a>
+                  </li>
+
+                  {% url 'pending_request' as url %}
+                  <li class="nav-item px-4 {% if request.path == url %} active {% endif %}">
+                    <a class="nav-link" href="{% url 'pending_request' %}">
+                      <i class="material-icons">pending_actions</i>
+                      <p class="">Pending request </p>
+                    </a>
+                  </li>
+
+                  {% url 'accepted_request' as url %}
+                  <li class="nav-item px-4 {% if request.path == url %} active {% endif %}">
+                    <a class="nav-link" href="{% url 'accepted_request' %}">
+                      <i class="material-icons">checklist</i>
+                      <p class="">Accepted request </p>
+                    </a>
+                  </li>
+              </div>
+
+        </div>
+          
+          {% url 'patient_list' as url %}
+          <li class="nav-item {% if request.path == url %} active {% endif %}">
+            <a class="nav-link" href="{% url 'patient_list' %}">
+              <i class="material-icons">person</i>
+              <p>Patients </p>
+            </a>
+          </li>
+
+          <hr>
+
+          <div id="accordion">
+          
+            <li class="nav-item {% if 'index' in segment %} active {% endif %}">
+              <a class="nav-link" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree" href="/">
+                <i class="material-icons">inventory</i>
+              
+                <p class="dropdown-toggle"> Inventory  </p> 
+              </a>
+              
+
+
+            </li>
+
+            <div id="collapseThree" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+
+              {% url 'category' as url %}
+              <li class="nav-item px-4 {% if request.path == url %} active {% endif %}">
+                  <a class="nav-link" href="{% url 'category' %}">
+                    <i class="material-icons">edit_note</i>
+                    <p class=""> Categories </p>
+                  </a>
+                </li>
+
+                {% url 'product_list' as url %}
+                <li class="nav-item px-4 {% if request.path == url %} active {% endif %}">
+                  <a class="nav-link" href="{% url 'product_list' %}">
+                    <i class="material-icons">edit_note</i>
+                    <p class=""> Products </p>
+                  </a>
+                </li>
+
+                {% url 'sales' as url %}
+                <li class="nav-item px-4 {% if request.path == url %} active {% endif %}">
+                  <a class="nav-link" href="{% url 'sales' %}">
+                    <i class="material-icons">edit_note</i>
+                    <p class=""> Sales </p>
+                  </a>
+                </li>
+
+
+          
+            </div>
+
+          </div>
+
+        {% endif %}
+        </ul>
+      </div>
+
+    </div>

@@ -1,0 +1,809 @@
+
+{% extends 'clinic/layout/base.html' %}
+
+{% block title %} {% endblock %}
+
+
+{% block stylesheets %}
+<style>
+
+    body{
+        background: white !important;
+    }
+
+    .featured_product_container {
+        width: 100%;
+        margin-top: 50px;
+
+        padding-right: 0px;
+        padding-left: 0px;
+    }
+
+
+    .featured_product_container a {
+        color: #3f61ad;
+        text-decoration: none;
+        text-align: center;
+        background-color: transparent;
+    }
+
+    .featured_product_container .featured_products .product__item img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+    .featured_product_container .featured_products .product__item:hover{
+        width: 103%;
+    }
+    
+
+
+    .shop_gender_container .shop_gender {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .shop_gender_container .gen_image{
+        width: 100%;
+    }
+
+    .navbar {
+      z-index: 100;
+    }
+    
+    . {
+      z-index: 50;
+    }
+    
+    #more {display: none;}
+
+    .product-container {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      margin: -5px;
+    }
+    .product-item {
+      flex: 0 0 auto;
+      margin: 5px;
+    }
+
+
+
+</style>
+{% endblock %}
+
+{%  block content %}
+
+      <!-- Navbar -->
+      
+
+
+    <div class="fixed-top bg-white">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <!-- Container wrapper -->
+      <div class="container">
+        <!-- Navbar brand -->
+
+        <a class="h3 mx-3" href="{% url 'home' %}">OCMS</a>
+
+
+        <!-- Toggle button -->
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-mdb-toggle="collapse"
+          data-mdb-target="#navbarButtonsExample"
+          aria-controls="navbarButtonsExample"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <i class="fa fa-bars"></i>
+        </button>
+
+        <!-- Collapsible wrapper -->
+        <div class="collapse navbar-collapse" id="navbarButtonsExample">
+          <!-- Left links -->
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'home' %}"> Home </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="#product_list"> Products </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="#about_us"> About Us</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="#"> Contact </a>
+            </li>
+          </ul>
+          <!-- Left links -->
+
+          {% if request.user.is_authenticated %}
+          <div class="d-flex align-items-center">
+
+            <button type="button" class="btn btn-link px-3 me-2" data-mdb-toggle="modal" data-mdb-target="#request_modal">
+              Book Appointment
+            </button>
+            <a href="" type="button" class="btn btn-primary me-3" data-mdb-toggle="modal" data-mdb-target="#appointment_modal">
+              View Appointment
+            </a>
+
+            
+            <div class="dropdown">
+              <a
+                class="dropdown-toggle d-flex align-items-center text-capitalize"
+                href="#"
+                id="navbarDropdownMenuAvatar"
+                role="button"
+                data-mdb-toggle="dropdown"
+                aria-expanded="false"
+              >
+              {{ request.user}}
+              </a>
+              <ul
+                class="dropdown-menu dropdown-menu-end"
+                aria-labelledby="navbarDropdownMenuAvatar"
+              >
+                <li>
+                  <a class="dropdown-item" type="button" data-mdb-toggle="modal" data-mdb-target="#view_profile">My profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#">Settings</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                </li>
+              </ul>
+            </div>
+
+          
+          </div>
+
+          {% else %}
+
+          <div class="d-flex align-items-center">
+
+            <a type="button" href="{% url 'login' %}" class="btn btn-link px-3 me-2">
+              Login
+            </a>
+            <a type="button" href="{% url 'register' %}" class="btn btn-primary me-3">
+              Sign up for free
+            </a>
+
+
+          
+          </div>
+
+          {% endif %}
+        </div>
+        <!-- Collapsible wrapper -->
+      </div>
+      <!-- Container wrapper -->
+    </nav>
+
+
+    </div>
+
+    <!-- Second modal dialog -->
+    <div class="modal fade" id="view_medications" aria-hidden="true" aria-labelledby="exampleModalToggleLabel22" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalToggleLabel22">Medications</h5>
+            <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col">
+                <!-- Name input -->
+                <div class="form-outline">
+                  <input type="text" id="form8Example1" class="form-control form-control-lg" value="{{ prescriptions.name }}" disabled/>
+                  <label class="form-label" for="form8Example1">Name</label>
+                </div>
+              </div>
+              <div class="col">
+                <!-- Email input -->
+                <div class="form-outline">
+                  <input type="text" id="form8Example2" class="form-control form-control-lg" value="{{ prescriptions.date_start}} - {{ prescriptions.date_end}}" disabled/>
+                  <label class="form-label" for="form8Example2">Date Range</label>
+                </div>
+              </div>
+              <div class="col">
+                <!-- Email input -->
+                <div class="form-outline">
+                  <input type="text" id="form8Example2" class="form-control form-control-lg" value="{{ prescriptions.duration}}" disabled/>
+                  <label class="form-label" for="form8Example2">Duration</label>
+                </div>
+              </div>
+            </div>
+            
+            <hr />
+            
+            <div class="row">
+              <div class="col">
+                <!-- Name input -->
+                <div class="form-outline">
+                  <input type="text" id="form8Example3" class="form-control form-control-lg" value="{{ prescriptions.medicine_type}}"disabled/>
+                  <label class="form-label" for="form8Example3">Medicine Type</label>
+                </div>
+              </div>
+              <div class="col">
+                <!-- Name input -->
+                <div class="form-outline">
+                  <input type="text" id="form8Example4" class="form-control form-control-lg" value="{{prescriptions.usage}}" disabled/>
+                  <label class="form-label" for="form8Example4">Usage</label>
+                </div>
+              </div>
+              
+            </div>
+
+            <hr/>
+            <div class="col">
+              <div class="form-outline">
+                <textarea class="form-control form-control-lg" id="textAreaExample" rows="3" disabled>{{ prescriptions.comment }}</textarea>
+                <label class="form-label" for="textAreaExample">Additional Information</label>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" data-mdb-target="#appointment_modal" data-mdb-toggle="modal">
+              View appointment
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- modal -->
+    <!-- Modal -->
+    <div class="modal fade" id="appointment_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Appointment</h5>
+            <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+
+            
+            {% if patient %}
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Requested Date</th>
+                    <th scope="col">Appointment Date</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">{{ patient.appointment.request_date }}</th>
+                    <td>{{ patient.appointment.appointment_date }}</td>
+                    <td>{{ patient.appointment.appointment_time }}</td>
+                    <td>{{ patient.appointment.status }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-mdb-target="#view_medications" data-mdb-toggle="modal" data-mdb-dismiss="modal"> View medications</button>
+            </div>
+
+            {% else %}
+            <h3 class="text-center text-info">You don't have an appointment yet</h3>
+            {% endif %}
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile modal -->
+
+        <!-- Second modal dialog -->
+        <div class="modal fade" id="view_profile" aria-hidden="true" aria-labelledby="exampleModalToggleLabel22" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel22">Edit Profile</h5>
+                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="card">
+                  <div class="card-body">
+                  <form action="{% url 'update_profile_patient' %}" method="POST">
+                      {% csrf_token %}
+                      <div class="row">
+                        <div class="col">
+                          <div class="form-outline">
+                            <input type="text" id="form8Example1" class="form-control form-control-lg" value="{{ request.user}}" disabled/>
+                            <label class="form-label" for="form8Example1">Username</label>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="form-outline">
+                            <input type="email" id="form8Example1" class="form-control form-control-lg" value="{{ request.user.email}}"/>
+                            <label class="form-label" for="form8Example1">Email</label>
+                          </div>
+                        </div>
+                      </div>
+                      <hr/>
+                    <div class="row">
+                      <div class="col">
+                        <div class="form-outline">
+                          <input type="text" id="form8Example1" class="form-control form-control-lg" value="{{ request.user.first_name}}"/>
+                          <label class="form-label" for="form8Example1">Firstname</label>
+                        </div>
+                      </div>
+                      <div class="col">
+                        <div class="form-outline">
+                          <input type="text" id="form8Example1" class="form-control form-control-lg" value="{{ request.user.last_name}}"/>
+                          <label class="form-label" for="form8Example1">Lastname</label>
+                        </div>
+                      </div>
+                    </div>
+                      
+  
+  
+                  </form>
+                  </div>
+              </div>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-primary" data-mdb-target="#appointment_modal" data-mdb-toggle="modal">
+                  Update profile
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+    
+
+    <main class="">
+
+
+
+
+      <div class="container-fluid py-5 my-5">
+        <div class="row">
+            <div class="col-lg-6 d-flex align-items-center">
+                <div class="text-center">
+
+                    <h1 class="display-4 fw-bold">See the world with clarity at our optical clinic</h1>
+                    <p class="fs-5">We offer a wide range of services to help you maintain good eye health.</p>
+                    <ul class="list-unstyled fs-6 mb-5">
+                        <li><strong>Monday – Friday</strong> 8.00 – 13.00</li>
+                        <li><strong>Saturday</strong> 8.00 – 15.00</li>
+                        <li><strong>Sunday</strong> 8.00 – 18.00</li>
+                    </ul>
+                </div>
+            </div>
+            {% if request.user.is_authenticated == False %}
+            <div class="col-lg-6">
+  
+                <div class="card shadow-lg p-5">
+                    <h2 class="text-center text-info mb-5">Request an Appointment</h2>
+                    <form id="request-form" enctype="multipart/form-data">
+                        {% csrf_token %}
+  
+                        <div class="row mb-4">
+                          <div class="col">
+                            <div class="form-outline">
+                              <input type="text" name="firstname" id="form6Example1" class="form-control"  />
+                              
+                                <label class="form-label" for="form6Example6">Firstname</label>
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="form-outline">
+                              <input type="text"  name="lastname" id="form6Example2" class="form-control"  />
+                              
+                              <label class="form-label" for="form6Example6">Lastname</label>
+                            </div>
+                          </div>
+                        </div>
+  
+                        <div class="row mb-4">
+                          <div class="col-md-2">
+                            <div class="form-outline">
+                              <input type="text"  name="age" id="form6Example2" class="form-control"  />
+                                                          
+                                <label class="form-label" for="form6Example6">Age</label>
+                            </div>
+                          </div>
+  
+                          <div class="col-md-4">
+                            <div class="form-outline">
+                              <input type="text"  name="phone_number" id="form6Example2" class="form-control" />
+                              
+                                <label class="form-label" for="form6Example6">Phone</label>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-outline">
+                              <input type="email"  name="email" id="form6Example2" class="form-control" />
+                              
+                              <label class="form-label" for="form6Example6">Email</label>
+
+                            </div>
+                          </div>
+  
+                        </div>
+  
+                        <div class="row mb-4">
+                            <div class="col">
+                              <input type="date" name="date" id="date-input" class="form-control text-info" placeholder="Select date" min="" max="" required>
+                              
+                            </div>
+  
+                        </div>
+  
+                        <div class="row mb-4">
+                          <div class="form-outline mb-4">
+                            <textarea class="form-control" id="form6Example7" rows="2"></textarea>
+                            <label class="form-label" for="form6Example7">Additional information</label>
+                          </div>
+                        </div>
+                        <button class="btn btn-info float-end">Send request</button>
+                    </form>
+                </div> 
+            </div>
+
+            {% else %}
+
+            <div class="col-lg-6">
+              <img src="/static/assets/img/rick-astley.jpg" alt="Rick-Astley" class="img-fluid"> 
+            </div>
+            {% endif %}
+
+            
+        </div>
+      </div>
+
+
+
+
+
+      <div class="main_container">
+        <div class="main_row my-3">
+          <div class="shop_gender_container shop_gender_desktop">
+            <div class="shop_gender">
+              <a href="/gender/Men">
+                <img src="/static/assets/img/clinic/Shop_Men.png" class="gen_image">
+
+              </a>
+              <a href="/gender/Women">
+                <img src="/static/assets/img/clinic/Shop_Women.png" class="gen_image">
+
+              </a>
+              <a href="/ageGroup/Kids">
+                <img src="/static/assets/img/clinic/Shop_Kids.png" class="gen_image">
+
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+      <div class="container-fluid">
+        <div class="card py-3 mx-3">
+          <h4 class="text-center mb-5 border-bottom" id="product_list"><strong>Product listing</strong></h4>
+          <!-- Tabs navs -->
+          <ul class="nav nav-tabs my-3 d-flex justify-content-center" id="myTab" role="tablist">
+            {% for category in categories %}
+            <li class="nav-item">
+              <a class="nav-link {% if forloop.first %}active{% endif %}" id="{{ category.name }}-tab" data-mdb-toggle="tab" href="#{{ category.name }}" role="tab" aria-controls="{{ category.name }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">{{ category.name }}</a>
+            </li>
+            {% endfor %}
+          </ul>
+          <!-- Tabs content -->
+          <div class="tab-content px-5" id="ex2-content">
+            {% for category in categories %}
+            <div class="tab-pane fade{% if forloop.first %} show active{% endif %}" id="{{ category.name }}" role="tabpanel" aria-labelledby="{{ category.name }}-tab">
+
+              <div class="product-container">
+                {% for product in products %}
+                  {% if product.category == category %}
+                    <div class="col-lg-4 col-md-12 product-item">
+                      <div class="bg-image hover-zoom ripple shadow-1-strong rounded w-50">
+                        <img src="{{ product.image.url }}" class="w-100" />
+                        <a href="#!">
+                          <div class="mask" style="background-color: rgba(0, 0, 0, 0.3);">
+                            <div class="d-flex justify-content-start align-items-start h-100">
+                              <h5><span class="badge bg-light pt-2 ms-3 mt-3 text-dark">₱{{ product.price }}</span></h5>
+                            </div>
+                          </div>
+                          <div class="hover-overlay">
+                            <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+
+              
+              
+              
+              
+
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      
+
+
+
+
+
+      <div class="container-fluid p-5 my-2" id="about_us">
+        <h5> About us </h5>
+        <div class="row mb-2">
+          <div class="col-md-12">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+              <div class="col p-4 d-flex flex-column position-static">
+                <strong class="d-inline-block mb-2 text-primary">Welcome to our Optical Clinic!</strong>
+                <p class="card-text mb-auto">We are a team of dedicated professionals who are passionate about providing high-quality eye care services to our patients. Our mission is to help you achieve and maintain healthy vision so you can live your life to the fullest.</p>
+                <p>At our clinic, we offer a wide range of services, including comprehensive eye exams, contact lens fittings, eyeglasses and sunglasses prescriptions, and treatment of eye diseases. We use state-of-the-art technology to ensure accurate diagnosis and the best possible outcome for each patient.</p>
+                <span id="dots">...</span><span id="more" style="display: none;">
+                  <p>Our goal is to create a warm and welcoming environment where you feel comfortable and confident in the care you receive. We strive to build long-lasting relationships with our patients and their families, and we are always here to support you on your journey towards better vision.</p>
+                  <p>Thank you for choosing our Optical Clinic. We look forward to serving you and your family.</p>
+                </span>
+                <a onclick="myFunction()" id="myBtn" type="button" class="stretched-link">Continue reading</a>
+                
+
+              </div>
+              <div class="col-auto d-none d-lg-block">
+                <img src="/static/assets/img/clinic/appointment.png" width="200" height="250" alt="qwe" style="transform: scaleX(-1);">
+      
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+  
+
+
+
+
+
+
+  
+    </main>
+
+    <!-- Footer -->
+<footer class="text-center text-lg-start bg-white text-muted">
+  <!-- Section: Social media -->
+  <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
+    <!-- Left -->
+    <div class="me-5 d-none d-lg-block">
+      <span>Get connected with us on social networks:</span>
+    </div>
+    <!-- Left -->
+
+    <!-- Right -->
+    <div>
+      <a href="" class="me-4 link-secondary">
+        <i class="fa fa-facebook-f"></i>
+      </a>
+      <a href="" class="me-4 link-secondary">
+        <i class="fa fa-twitter"></i>
+      </a>
+      <a href="" class="me-4 link-secondary">
+        <i class="fa fa-google"></i>
+      </a>
+      <a href="" class="me-4 link-secondary">
+        <i class="fa fa-instagram"></i>
+      </a>
+      <a href="" class="me-4 link-secondary">
+        <i class="fa fa-linkedin"></i>
+      </a>
+      <a href="" class="me-4 link-secondary">
+        <i class="fa fa-github"></i>
+      </a>
+    </div>
+    <!-- Right -->
+  </section>
+  <!-- Section: Social media -->
+
+  <!-- Section: Links  -->
+  <section class="">
+    <div class="container text-center text-md-start mt-5">
+      <!-- Grid row -->
+      <div class="row mt-3">
+        <!-- Grid column -->
+        <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+          <!-- Content -->
+          <h6 class="text-uppercase fw-bold mb-4">
+            <i class="fas fa-gem me-3 text-secondary"></i>Optical Clinic
+          </h6>
+          <p>
+            See the world with clarity at our optical clinic.
+            We offer a wide range of services to help you maintain good eye health.
+          </p>
+          <p>We offer a wide range of services to help you maintain good eye health.</p>
+          <ul class="list-unstyled fs-6 mb-5">
+              <li><strong>Monday – Friday</strong> 8.00 – 13.00</li>
+              <li><strong>Saturday</strong> 8.00 – 15.00</li>
+              <li><strong>Sunday</strong> 8.00 – 18.00</li>
+          </ul>
+        </div>
+        <!-- Grid column -->
+
+        <!-- Grid column -->
+        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+          <!-- Links -->
+          <h6 class="text-uppercase fw-bold mb-4">
+            Menu
+          </h6>
+          <p>
+            <a href="#!" class="text-reset">Home</a>
+          </p>
+          <p>
+            <a href="#!" class="text-reset">Products</a>
+          </p>
+          <p>
+            <a href="#!" class="text-reset">About Us</a>
+          </p>
+          <p>
+            <a href="#!" class="text-reset">Contact</a>
+          </p>
+
+        </div>
+        <!-- Grid column -->
+
+        <!-- Grid column -->
+        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+          <!-- Links -->
+          <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
+          <p><i class="fa fa-home me-3 text-secondary"></i> Dagupan City, Tapuac Amado</p>
+          <p>
+            <i class="fa fa-envelope me-3 text-secondary"></i>
+            info@example.com
+          </p>
+          <p><i class="fa fa-phone me-3 text-secondary"></i> + 01 234 567 88</p>
+          <p><i class="fa fa-print me-3 text-secondary"></i> + 01 234 567 89</p>
+        </div>
+        <!-- Grid column -->
+      </div>
+      <!-- Grid row -->
+    </div>
+  </section>
+  <!-- Section: Links  -->
+
+  <!-- Copyright -->
+  <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.025);">
+    © 2021 Copyright:
+    <a class="text-reset fw-bold" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+  </div>
+  <!-- Copyright -->
+</footer>
+<!-- Footer -->
+
+
+         
+    <!-- MODAL -->
+
+  {% include 'clinic/includes/request_modal.html' %}
+    
+
+{% endblock %}
+
+
+{% block javascripts %}
+
+
+<script>
+  $(document).ready(function() {
+    $('#request-form').submit(function(event) {
+        event.preventDefault();  // Prevent the default form submission
+
+        $.ajax({
+            url: '{% url "send_request" %}',
+            type: 'POST',
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                // Display success message using SweetAlert2
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: response.message,
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Reload the page or redirect to another page
+                        location.reload();  // Example: Reload the current page
+                    }
+                });
+            },
+            error: function(xhr, status, error) {
+                // Display error message using SweetAlert2
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: xhr.responseJSON.message,
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+    });
+});
+
+</script>
+
+
+<script>
+
+  function myFunction() {
+    var dots = document.getElementById("dots");
+    var moreText = document.getElementById("more");
+    var btnText = document.getElementById("myBtn");
+  
+    if (moreText.style.display === "none") {
+      dots.style.display = "none";
+      moreText.style.display = "inline";
+      btnText.innerHTML = "Read less";
+    } else {
+      dots.style.display = "inline";
+      moreText.style.display = "none";
+      btnText.innerHTML = "Continue reading";
+    }
+  }
+  
+
+  var today = new Date();
+
+  // Format the date as yyyy-mm-dd
+  var yyyy = today.getFullYear();
+  var mm = today.getMonth() + 1;
+  var dd = today.getDate() + 1;
+    
+  if (dd < 10) {
+    dd = '0' + dd;
+  }
+  
+  if (mm < 10) {
+    mm = '0' + mm;
+  }
+  
+  var formattedToday = yyyy + '-' + mm + '-' + dd;
+    
+  // Set the min attribute of the input element to today's date
+  document.getElementById('date-input').setAttribute('min', formattedToday);
+  
+  // Disable today's date in the datepicker
+  var todayOption = document.querySelector('#date-input option[value="' + formattedToday + '"]');
+  if (todayOption) {
+    todayOption.disabled = true;
+  }
+
+
+  var dateInput = document.getElementById("date-input");
+
+  // Set the "min" attribute of the date input field to the current date
+  dateInput.setAttribute("min", new Date().toISOString().split('T')[0]);
+
+</script>
+{% endblock %}

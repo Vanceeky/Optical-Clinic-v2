@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8" />
+  <link rel="apple-touch-icon" sizes="76x76" href="/static/assets/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="/static/assets/img/favicon.png">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+  <title>
+    OCMS | Sign in
+  </title>
+
+  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+  <!--     Fonts and icons     -->
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+  <!-- CSS Files -->
+  <link href="/static/assets/css/material-dashboard.css?v=2.1.2" rel="stylesheet" />
+  <!-- CSS Just for demo purpose, don't include it in your project -->
+
+</head>
+
+<style>
+@import url(https://fonts.googleapis.com/css?family=Roboto:300,400,700&display=swap);body {
+    background: #f5f5f5;
+  }
+
+  
+  @media only screen and (max-width: 767px) {
+    .hide-on-mobile {
+      display: none;
+    }
+  }
+  
+  .login-box {
+    background: url(../static/assets/img/login-form-bg.png);
+    background-size: cover;
+    background-position: center;
+    padding: 50px;
+    margin: 50px auto;
+    min-height: 700px;
+    -webkit-box-shadow: 0 2px 60px -5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 60px -5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .logo {
+    font-family: "Script MT";
+    font-size: 54px;
+    text-align: center;
+    color: #888888;
+    margin-bottom: 50px;
+  }
+
+  .logo a{
+    color: #888888;
+  }
+  
+  .logo .logo-font {
+    color: #3BC3FF;
+  }
+  
+  @media only screen and (max-width: 767px) {
+    .logo {
+      font-size: 34px;
+    }
+  }
+  
+  .header-title {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+
+  .header-title h3{
+    font-weight: bold;
+  }
+  
+  .login-form {
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  
+  .login-form .form-control {
+    border-radius: 0;
+    margin-bottom: 30px;
+  }
+  
+  .login-form .form-group {
+    position: relative;
+  }
+  
+  .login-form .form-group .forgot-password {
+    position: absolute;
+    top: 6px;
+    right: 15px;
+  }
+  
+  .login-form .btn {
+    border-radius: 0;
+    -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+  }
+  
+  .login-form .btn.btn-primary {
+    background: #3BC3FF;
+    border-color: #31c0ff;
+  }
+  
+  .slider-feature-card {
+    background: #fff;
+    max-width: 280px;
+    margin: 0 auto;
+    padding: 30px;
+    text-align: center;
+    -webkit-box-shadow: 0 2px 25px -3px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 25px -3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .slider-feature-card img {
+    height: 80px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+  
+  .slider-feature-card h3,
+  .slider-feature-card p {
+    margin-bottom: 30px;
+  }
+  
+  .carousel-indicators {
+    bottom: -50px;
+  }
+  
+  .carousel-indicators li {
+    cursor: pointer;
+  }
+
+  
+</style>
+
+<body class='center'>
+
+<section class="body">
+    <div class="container">
+        <div class="login-box">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="logo">
+                        <a href="{% url 'home' %}"><span class="logo-font">Optical</span>Clinic</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <br>
+                    <div class="header-title">
+                        <h3 class="">LOGIN</h3>
+                        <h6 class="card-category">
+
+                        {% for message in messages %}
+            
+                        <span class="text-success">{{ message }}</span>
+                        <br>
+                                       
+                    
+                      {% endfor %} 
+            
+                          {% if msg %}
+                            <span class="text-danger">{{ msg | safe }}</span>
+                          {% else %}
+                              Add your credentials
+                          {% endif %}  
+                      </h6>
+
+                    </div>
+                    
+                    
+                    <form class="login-form" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label class="bmd-label-floating">Username</label>
+                            {{ form.username }}
+                          </div>
+                          <div class="form-group">
+                            <label class="bmd-label-floating">Password</label>
+                            {{ form.password }}
+
+							              <a href="/reset_password">Forgot password?</a>
+                          </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-block" name="login">LOGIN</button>
+                        </div>
+                        <div class="form-group">
+                            <div class="text-center">Don't have account yet? <a href="{% url 'register' %}">Sign up Now</a></div>
+                        </div>
+                    </form>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% include 'includes/scripts.html' %}
+
+</body>
+</html>

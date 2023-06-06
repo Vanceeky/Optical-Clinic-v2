@@ -1,0 +1,9 @@
+patient profile: 
+- Generate Patient Prescription:
+    - Add medications - button
+    - name, medicine dosage
+    - add comment
+
+
+patient Prescription ID - foreignkey: Patient
+
