@@ -326,7 +326,6 @@ def product_list(request):
     }
     return render(request, 'dashboard/product_list.html', context)
 
-@allowed_users(allowed_roles=['admin', 'staff'])
 def add_category(request):
     if request.is_ajax() and request.method == 'POST':
         name = request.POST.get('name')
