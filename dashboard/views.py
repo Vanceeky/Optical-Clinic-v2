@@ -21,7 +21,7 @@ from django.http import JsonResponse
 def handler404(request, exception):
     return render(request, '404.html', status=404)
 
-@admin_only
+
 @allowed_users(allowed_roles=['admin', 'staff'])
 def index(request):
     
@@ -157,7 +157,6 @@ def set_appointment(request, pk):
     return JsonResponse({'message': 'error'})
 
 @allowed_users(allowed_roles=['admin', 'staff'])
-
 def cancel_request(request, pk):
     if request.method == 'POST' and request.is_ajax():
         patient_id = request.POST.get('patient_id')
@@ -177,7 +176,6 @@ def cancel_request(request, pk):
         return JsonResponse({'error': 'Invalid request.'})
 
 @allowed_users(allowed_roles=['admin', 'staff'])
-
 def reschedule_appointment(request, pk):
     if request.method == 'POST' and request.is_ajax():
         patient_id = request.POST.get('patient_id')
@@ -329,7 +327,6 @@ def product_list(request):
     return render(request, 'dashboard/product_list.html', context)
 
 @allowed_users(allowed_roles=['admin', 'staff'])
-
 def add_category(request):
     if request.is_ajax() and request.method == 'POST':
         name = request.POST.get('name')
@@ -352,7 +349,6 @@ def add_category(request):
     return JsonResponse({'error': 'Invalid request'})
 
 @allowed_users(allowed_roles=['admin', 'staff'])
-
 def add_product(request):
     if request.is_ajax() and request.method == 'POST':
         category_id = request.POST.get('category')
@@ -448,7 +444,6 @@ def sales(request):
     return render(request, 'dashboard/sales.html', context)
 
 @allowed_users(allowed_roles=['admin', 'staff'])
-
 def add_sale(request):
     if request.is_ajax() and request.method == 'POST':
         product_id = request.POST.get('product')
