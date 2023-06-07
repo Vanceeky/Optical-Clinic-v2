@@ -21,7 +21,7 @@ from django.http import JsonResponse
 def handler404(request, exception):
     return render(request, '404.html', status=404)
 
-
+@admin_only
 @allowed_users(allowed_roles=['admin', 'staff'])
 def index(request):
     
